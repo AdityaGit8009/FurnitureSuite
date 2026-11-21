@@ -177,10 +177,12 @@ export function OrderTracker({ user, work, signIn }) {
   const [selected, S] = useState(
       () => new URLSearchParams(location.search).get("order") || "",
     ),
-    [data, D] = useState(null),
+    [snapshot, D] = useState(null),
     [error, E] = useState("");
   const refresh = useRef(null);
   const order = selected || String(orders[0]?.id || "");
+  const scope = [user?.id, user?.role, order].join("|");
+  const data = snapshot?.scope === scope ? snapshot.value : null;
   useEffect(() => {
     let current = true,
       loading = false;
@@ -197,7 +199,7 @@ export function OrderTracker({ user, work, signIn }) {
       try {
         const value = await api("/orders/" + order + "/tracking");
         if (current) {
-          D(value);
+          D({ value, scope });
           E("");
         }
       } catch (e) {
@@ -219,7 +221,7 @@ export function OrderTracker({ user, work, signIn }) {
       clearInterval(timer);
       document.removeEventListener("visibilitychange", read);
     };
-  }, [order, user?.id, user?.role]);
+  }, [order, user?.id, user?.role, scope]);
   const workshop = data?.workshop?.[0],
     begin = workshop ? ["IN_PRODUCTION", "CONFIRMED"] : ["CONFIRMED"];
   const stages =
