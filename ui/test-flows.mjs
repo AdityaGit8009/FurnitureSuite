@@ -4,7 +4,7 @@ import {adminRecordTests} from "./test-admin-records.mjs";
 import {catalogTests,catalogBrowser} from "./test-catalog.mjs";
 import {purchaseBrowser} from "./test-purchase.mjs";
 import {experienceTests,studioBrowser} from "./test-experience.mjs";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -17,7 +17,17 @@ const password = randomUUID() + "!",
   jar = resolve(
     process.env.APSP_TEST_JAR || "../target/furniture-suite-1.0.0.jar",
   );
-const proc = spawn(process.env.APSP_JAVA || "java", ["-jar", jar], {
+let javaCommand = process.env.APSP_JAVA || "java";
+if (process.platform === "win32") {
+  // The Oracle PATH launcher starts a second JVM that survives killing the launcher.
+  const settings = spawnSync(javaCommand, ["-XshowSettings:properties", "-version"], {
+    encoding: "utf8",
+    windowsHide: true,
+  });
+  const home = /^\s*java\.home\s*=\s*(.+)$/m.exec(settings.stderr || "")?.[1].trim();
+  if (settings.status === 0 && home) javaCommand = join(home, "bin", "java.exe");
+}
+const proc = spawn(javaCommand, ["-jar", jar], {
   cwd: dir,
   env: {
     ...process.env,
