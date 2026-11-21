@@ -47,6 +47,17 @@ import "./catalog.css";
 import "./layout.css";
 import "./account.css";
 import "./storefront.css";
+function alternatePieces(pieces, keyOf) {
+  const counts = new Map(),
+    rounds = [];
+  for (const piece of pieces) {
+    const key = keyOf(piece),
+      index = counts.get(key) || 0;
+    (rounds[index] ??= []).push(piece);
+    counts.set(key, index + 1);
+  }
+  return rounds.flat();
+}
 function App() {
   const [u, U] = useState(null),
     [desk, D] = useState({ work: [], wishlist: [], team: [] }),
@@ -171,6 +182,11 @@ function App() {
             [p.sku, p.name, p.finish, p.category, p.dimensions].join(" "),
           ).includes(word),
         ),
+    );
+  if (sort === "Featured")
+    shown = alternatePieces(
+      alternatePieces(shown, (p) => p.variant_family || p.sku),
+      (p) => p.photo,
     );
   if (sort === "Price: low first") shown.sort((a, b) => a.price - b.price);
   if (sort === "Price: high first") shown.sort((a, b) => b.price - a.price);

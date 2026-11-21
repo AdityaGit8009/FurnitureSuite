@@ -274,6 +274,9 @@ input[autocomplete="one-time-code"] {
   font-size: 1.1rem;
 }
 @media (max-width: 720px) {
+  .account-page {
+    padding-inline-end: max(var(--theme-edge), env(safe-area-inset-right));
+  }
   .account-grid {
     grid-template-columns: 1fr;
   }

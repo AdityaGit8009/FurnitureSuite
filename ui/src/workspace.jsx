@@ -1454,14 +1454,16 @@ export function Workspace(p) {
                                         >
                                           {w.enabled ? "Disable" : "Enable"}
                                         </button>
-                                        {w.canDelete && (<button
-                                          className="delete-link"
-                                          onClick={() =>
-                                            setRecordDelete({ row: w })
-                                          }
-                                        >
-                                          Delete
-                                        </button>)}
+                                        {w.canDelete && (
+                                          <button
+                                            className="delete-link"
+                                            onClick={() =>
+                                              setRecordDelete({ row: w })
+                                            }
+                                          >
+                                            Delete
+                                          </button>
+                                        )}
                                       </>
                                     )}
                                   </>
