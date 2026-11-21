@@ -56,15 +56,21 @@ export const typeNames = {
   CAMPAIGN: "Campaigns",
   REVIEW: "Product reviews",
 };
+const dialogStack = [];
+let pageOverflow = "";
 export function Modal({ title, close, children, wide, className = "" }) {
   let ref = useRef(null);
   useEffect(() => {
     let before = document.activeElement;
-    let body = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    ref.current.focus();
+    const dialog = ref.current;
+    if (!dialogStack.length) {
+      pageOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    }
+    dialogStack.push(dialog);
+    dialog.focus();
     function key(e) {
-      if (document.body.dataset.paymentDialog) return;
+      if (document.body.dataset.paymentDialog || dialogStack.at(-1) !== dialog) return;
       if (e.key === "Escape") close();
       if (e.key === "Tab") {
         let list = [
@@ -88,9 +94,11 @@ export function Modal({ title, close, children, wide, className = "" }) {
     }
     document.addEventListener("keydown", key);
     return () => {
-      document.body.style.overflow = body;
+      const topmost = dialogStack.at(-1) === dialog;
+      dialogStack.splice(dialogStack.indexOf(dialog), 1);
+      if (!dialogStack.length) document.body.style.overflow = pageOverflow;
       document.removeEventListener("keydown", key);
-      before?.focus();
+      if (topmost && before?.isConnected) before.focus();
     };
   }, []);
   return (
