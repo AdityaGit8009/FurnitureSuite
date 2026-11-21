@@ -18,6 +18,9 @@ function content(node) {
     return node.props["data-sort"] ?? content(node.props.children);
   return String(node);
 }
+function canSort(name) {
+  return Boolean(name) && name !== "Action" && name !== "Actions";
+}
 function compare(a, b) {
   const currency = /^[₹$]?\s*-?[\d,]+(?:\.\d+)?$/;
   if (currency.test(a) && currency.test(b))
@@ -108,7 +111,7 @@ export function DataTable({
             <option value="">Original order</option>
             {headers.flatMap((h, i) => {
               const n = content(h.props.children).trim();
-              return !n || n === "Actions"
+              return !canSort(n)
                 ? []
                 : [
                     <option key={i + "a"} value={i + "a"}>
@@ -142,7 +145,7 @@ export function DataTable({
             <tr>
               {headers.map((h, i) => {
                 const name = content(h.props.children).trim();
-                if (!name || ["Action", "Actions"].includes(name))
+                if (!canSort(name))
                   return cloneElement(h, { key: i, scope: "col" });
                 const active = sort.column === i;
                 const Icon = active
