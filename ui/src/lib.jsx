@@ -183,12 +183,15 @@ export function Field({ f }) {
   );
 }
 export function Form({ fields, submit, button = "Save", children }) {
+  const submitting = useRef(false);
   let [busy, B] = useState(false),
     [error, E] = useState("");
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        if (submitting.current) return;
+        submitting.current = true;
         let b = Object.fromEntries(new FormData(e.currentTarget));
         B(true);
         E("");
@@ -197,6 +200,7 @@ export function Form({ fields, submit, button = "Save", children }) {
         } catch (x) {
           E(x.message);
         } finally {
+          submitting.current = false;
           B(false);
         }
       }}
