@@ -1,0 +1,345 @@
+.account-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2.5rem) var(--page-gutter) 3rem;
+  color: var(--ink);
+}
+.account-crumb,
+.account-card > header,
+.account-identity,
+.account-identity p,
+.account-shortcuts > a,
+.account-shortcuts > button,
+.code-delivery,
+.account-empty,
+.security-line {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.account-crumb {
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+  color: var(--muted);
+}
+.account-crumb a {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  min-height: 2rem;
+}
+.account-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  border-radius: 1.2rem;
+  overflow: hidden;
+  background: var(--hero);
+  color: #fff;
+  min-height: clamp(10rem, 17vw, 14rem);
+}
+.account-identity {
+  padding: clamp(1.15rem, 3.5vw, 3.8rem);
+  gap: clamp(0.85rem, 2vw, 1.6rem);
+  min-width: 0;
+}
+.account-identity > div {
+  min-width: 0;
+}
+.account-identity h1 {
+  color: inherit;
+  margin: 0.22rem 0 0.48rem;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+.account-identity small,
+.account-card header small {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.085em;
+  font-weight: 650;
+}
+.account-identity small {
+  color: var(--glow);
+}
+.account-identity p {
+  margin: 0;
+  color: #f1f3eb;
+  overflow-wrap: anywhere;
+  display: block;
+  font-size: 0.9rem;
+}
+.account-identity p svg {
+  vertical-align: middle;
+  margin-right: 0.45rem;
+}
+.account-avatar,
+.account-round {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 50%;
+}
+.account-avatar {
+  width: clamp(2.9rem, 6vw, 4.5rem);
+  aspect-ratio: 1;
+  background: #ffffff18;
+  border: 1px solid #ffffff50;
+  font:
+    1.5rem Georgia,
+    serif;
+  color: #fff;
+}
+.account-hero-photo {
+  min-height: 100%;
+  position: relative;
+}
+.account-hero-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+.account-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.35rem;
+}
+.account-shortcuts > button,
+.account-shortcuts > a,
+.account-card {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+.account-shortcuts > button,
+.account-shortcuts > a {
+  text-decoration: none;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  min-width: 0;
+  justify-content: flex-start;
+}
+.account-shortcuts > * > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+.account-shortcuts strong,
+.account-shortcuts small {
+  display: block;
+}
+.account-shortcuts strong {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.account-shortcuts small {
+  color: var(--muted);
+  font-weight: 400;
+}
+.account-round {
+  width: 2.55rem;
+  height: 2.55rem;
+  background: var(--soft);
+  color: var(--accent);
+}
+.account-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 1rem;
+}
+.account-card {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.7rem);
+}
+.account-card > header {
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 0 0 0.9rem;
+}
+.account-card header small {
+  color: var(--muted);
+}
+.account-card h2 {
+  margin: 0.25rem 0 0;
+  font:
+    clamp(1.45rem, 2.6vw, 2.1rem)/1.1 Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+.account-card a,
+.account-card button:not(.profile-order) {
+  display: inline-flex;
+  gap: 0.42rem;
+  align-items: center;
+  min-height: 2.5rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.account-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+}
+.account-facts div {
+  min-width: 0;
+}
+.account-facts .full {
+  grid-column: 1/-1;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+.account-facts dt,
+.session-until,
+.account-empty p {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.account-facts dd {
+  margin: 0.25rem 0 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.security-card header > svg {
+  color: var(--accent);
+}
+.security-line {
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+.session-until {
+  margin: 0.7rem 0;
+}
+.account-orders {
+  margin-top: 1rem;
+  scroll-margin: 1rem;
+}
+.account-empty {
+  padding: 0.6rem 0;
+  flex-wrap: wrap;
+}
+.account-empty > div {
+  flex: 1;
+  min-width: 12rem;
+}
+.account-empty p {
+  margin: 0.25rem 0;
+}
+.account-page .profile-order {
+  justify-content: initial;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  margin: 0;
+  padding: 0.8rem 0.1rem;
+  background: transparent;
+  color: var(--ink);
+}
+.account-page .profile-order > span {
+  flex: 1;
+}
+.code-delivery,
+.account-notice {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  margin: 0.65rem 0 1rem;
+}
+.code-delivery {
+  align-items: flex-start;
+}
+.code-delivery svg {
+  color: var(--accent);
+  flex: none;
+}
+.code-delivery small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--muted);
+}
+input[autocomplete="one-time-code"] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3em;
+  font-size: 1.1rem;
+}
+@media (max-width: 720px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+  .account-hero {
+    grid-template-columns: minmax(0, 1fr) 26%;
+    min-height: 9.5rem;
+  }
+  .account-identity {
+    padding: 1rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .account-avatar {
+    width: 2.4rem;
+    font-size: 1rem;
+  }
+  .account-shortcuts {
+    gap: 0.35rem;
+  }
+  .account-shortcuts > a,
+  .account-shortcuts > button {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    padding: 0.65rem 0.45rem;
+    gap: 0.4rem;
+  }
+  .account-shortcuts > * > svg:last-child {
+    display: none;
+  }
+  .account-shortcuts strong {
+    font-size: 0.95rem;
+  }
+  .account-shortcuts small {
+    font-size: 0.72rem;
+  }
+  .account-identity h1 {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+  }
+  .account-identity p {
+    font-size: 0.8rem;
+  }
+  .account-card header {
+    flex-wrap: wrap;
+  }
+  .account-card a,
+  .account-card button:not(.profile-order) {
+    min-height: 2.4rem;
+  }
+  .account-empty > div {
+    min-width: 9rem;
+  }
+}
+@media (max-width: 420px) {
+  .account-hero {
+    grid-template-columns: minmax(0, 1fr) 21%;
+  }
+  .account-shortcuts .account-round {
+    width: 2rem;
+    height: 2rem;
+  }
+  .account-facts {
+    gap: 0.7rem;
+  }
+  .account-avatar {
+    display: none;
+  }
+}

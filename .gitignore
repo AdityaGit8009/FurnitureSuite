@@ -1,0 +1,6 @@
+data/
+target/
+ui/node_modules/
+*.log
+*.tmp
+.env
