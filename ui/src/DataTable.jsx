@@ -5,7 +5,8 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { ArrowDown, ArrowUp, ChevronsUpDown, Search } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, Search, Download, X } from "lucide-react";
+import { downloadTableCsv } from "./tableCsv.mjs";
 
 const collator = new Intl.Collator(undefined, {
   numeric: true,
@@ -33,6 +34,7 @@ export function DataTable({
   children,
   label = "Records",
   searchable = true,
+  exportable = false,
   initialSize = 10,
   context = "",
   pagingName = "rows",
@@ -73,6 +75,15 @@ export function DataTable({
   const pages = Math.max(1, Math.ceil(result.length / size)),
     current = Math.min(pages, page);
   React.useEffect(() => setPage(1), [context, filter, size]);
+  function exportRows() {
+    const columns = headers.map((header, index) => ({
+      index,
+      title: content(header.props.children).trim(),
+    })).filter(({ title }) => canSort(title));
+    downloadTableCsv(label, columns.map(({ title }) => title), result.map(
+      ({ values }) => columns.map(({ index }) => values[index] ?? "")
+    ));
+  }
   return (
     <div className="data-grid" role="region" aria-label={label}>
       <div className="data-tools">
@@ -124,6 +135,12 @@ export function DataTable({
             })}
           </select>
         </label>
+        {exportable && (
+          <button type="button" className="text-btn" onClick={exportRows} disabled={!result.length}
+            aria-label={"Export " + label + " as CSV"}>
+            <Download aria-hidden="true" size={15} /> Export CSV
+          </button>
+        )}
         <label className="grid-size">
           Rows per page{" "}
           <select

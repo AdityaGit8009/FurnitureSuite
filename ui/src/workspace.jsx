@@ -591,7 +591,7 @@ export function Workspace(p) {
                     </div>
                     <div className="panel">
                       <h3>Trial balance</h3>
-                      <DataTable label="Trial balance">
+                      <DataTable label="Trial balance" exportable>
                         <thead>
                           <tr>
                             <th>Account</th>
@@ -613,7 +613,7 @@ export function Workspace(p) {
                     </div>
                     <div className="panel">
                       <h3>Journal entries</h3>
-                      <DataTable label="Journal entries">
+                      <DataTable label="Journal entries" exportable>
                         <thead>
                           <tr>
                             <th>Date</th>
