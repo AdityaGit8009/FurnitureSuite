@@ -75,9 +75,12 @@ export function Modal({ title, close, children, wide, className = "" }) {
       if (e.key === "Tab") {
         let list = [
           ...ref.current.querySelectorAll(
-            'button:not(:disabled),input:not(:disabled),select,textarea,a[href],[tabindex="0"]',
+            'button,input,select,textarea,a[href],[tabindex]',
           ),
-        ];
+        ].filter((node) =>
+          node.tabIndex >= 0 && !node.matches(":disabled") &&
+          !node.closest("[hidden],[inert]") && node.getClientRects().length > 0
+        );
         if (!list.length) return;
         if (
           e.shiftKey &&
