@@ -82,7 +82,18 @@ export function ProductZoom({ photo, name }) {
     }
   }
   return (
-    <section className="photo-inspector" aria-label="Product photo zoom">
+    <section
+      className="photo-inspector"
+      aria-label="Product photo zoom"
+      onKeyDown={(event) => {
+        if (active && event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          resetView();
+          source.current?.focus();
+        }
+      }}
+    >
       <div className={"photo-zoom-grid" + (active ? " inspecting" : "")}>
         <button
           ref={source}
