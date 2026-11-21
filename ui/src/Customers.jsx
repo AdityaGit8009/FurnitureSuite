@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { api, Form, label, rupee } from "./lib";
 
 export const searchText = (value) =>
@@ -178,8 +178,8 @@ export function OrderTracker({ user, work, signIn }) {
       () => new URLSearchParams(location.search).get("order") || "",
     ),
     [data, D] = useState(null),
-    [error, E] = useState(""),
-    [tick, T] = useState(0);
+    [error, E] = useState("");
+  const refresh = useRef(null);
   const order = selected || String(orders[0]?.id || "");
   useEffect(() => {
     let current = true,
@@ -209,15 +209,17 @@ export function OrderTracker({ user, work, signIn }) {
         loading = false;
       }
     }
+    refresh.current = read;
     read();
     const timer = setInterval(read, 15000);
     document.addEventListener("visibilitychange", read);
     return () => {
       current = false;
+      refresh.current = null;
       clearInterval(timer);
       document.removeEventListener("visibilitychange", read);
     };
-  }, [order, user?.id, user?.role, tick]);
+  }, [order, user?.id, user?.role]);
   const workshop = data?.workshop?.[0],
     begin = workshop ? ["IN_PRODUCTION", "CONFIRMED"] : ["CONFIRMED"];
   const stages =
@@ -270,7 +272,7 @@ export function OrderTracker({ user, work, signIn }) {
               </select>
             </label>
             {order && (
-              <button onClick={() => T((v) => v + 1)}>Refresh tracking</button>
+              <button onClick={() => refresh.current?.()}>Refresh tracking</button>
             )}
           </section>
           {error && (
