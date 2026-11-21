@@ -771,7 +771,7 @@ export function Workspace(p) {
                     non-cancelled order quantities.
                   </p>
                   {reportError && <p className="error">{reportError}</p>}
-                  <DataTable label="Demand and replenishment">
+                  <DataTable label="Demand and replenishment" exportable>
                     <thead>
                       <tr>
                         <th>SKU / branch</th>
@@ -914,7 +914,7 @@ export function Workspace(p) {
                     </div>
                   ))}
                   <p>Units after reservations, by fulfilment branch.</p>
-                  <DataTable label="Branch inventory">
+                  <DataTable label="Branch inventory" exportable>
                     <thead>
                       <tr>
                         <th>SKU</th>
