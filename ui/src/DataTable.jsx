@@ -190,9 +190,9 @@ export function DataTable({
           </tbody>
         </table>
       </div>
-      {filter && !result.length && (
+      {!result.length && (
         <p className="hint" role="status">
-          No matching records.
+          {filter ? "No matching records." : "No records yet."}
         </p>
       )}
       <div className="grid-footer">
