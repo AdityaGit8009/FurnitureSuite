@@ -255,11 +255,9 @@ export function OrderTracker({ user, work, signIn }) {
                 value={order}
                 onChange={(e) => {
                   S(e.target.value);
-                  history.replaceState(
-                    null,
-                    "",
-                    "/track-order?order=" + e.target.value,
-                  );
+                  const url = new URL(location.href);
+                  url.searchParams.set("order", e.target.value);
+                  history.replaceState(history.state, "", url);
                 }}
               >
                 {(!orders.length ||
