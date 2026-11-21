@@ -75,6 +75,7 @@ export function DataTable({
   const pages = Math.max(1, Math.ceil(result.length / size)),
     current = Math.min(pages, page);
   React.useEffect(() => setPage(1), [context, filter, size]);
+  React.useEffect(() => setPage((previous) => Math.min(previous, pages)), [pages]);
   function exportRows() {
     const columns = headers.map((header, index) => ({
       index,
