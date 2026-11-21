@@ -125,8 +125,8 @@ export function Field({ f }) {
     <label className="field">
       {title}
       {type === "select" ? (
-        <select name={key} defaultValue={def || ""} required={!optional}>
-          {!def && <option value="">Choose…</option>}
+        <select name={key} defaultValue={def ?? ""} required={!optional}>
+          {(def == null || def === "") && <option value="">Choose…</option>}
           {(options || []).map((o) => {
             let [v, t] = Array.isArray(o) ? o : [o, o];
             return (
@@ -140,7 +140,7 @@ export function Field({ f }) {
         <textarea
           name={key}
           rows="3"
-          defaultValue={def || ""}
+          defaultValue={def ?? ""}
           required={!optional}
         />
       ) : (
