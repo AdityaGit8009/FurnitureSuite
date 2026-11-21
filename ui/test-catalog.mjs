@@ -135,7 +135,25 @@ export async function catalogBrowser(browser,base,password,fixture){
     await modal.getByRole("button",{name:"Close dialog"}).click();
     await page.goto(base+"/track-order?order="+fixture.order);
     await signIn(page,"catalogbuyer@example.com",password);
-    await page.getByText("Dispatch reference · CAT-DISPATCH-1").waitFor();
+    const dispatchReference = page.getByText("Dispatch reference · CAT-DISPATCH-1");
+    await dispatchReference.waitFor();
+    const trackingUrl = "**/api/orders/" + fixture.order + "/tracking";
+    await page.route(trackingUrl, (route) => route.fulfill({
+      status: 503, contentType: "application/json", body: JSON.stringify({ message: "Tracking is temporarily offline." }),
+    }));
+    await page.getByRole("button", { name: "Refresh tracking" }).click();
+    await page.getByRole("alert").filter({ hasText: "Tracking is temporarily offline." }).waitFor();
+    assert.equal(await dispatchReference.isVisible(), true);
+    await page.unroute(trackingUrl);
+    await page.route(trackingUrl, (route) => route.fulfill({
+      status: 403, contentType: "application/json", body: JSON.stringify({ message: "This order is unavailable." }),
+    }));
+    await page.getByRole("button", { name: "Refresh tracking" }).click();
+    await page.getByRole("alert").filter({ hasText: "This order is unavailable." }).waitFor();
+    await dispatchReference.waitFor({ state: "hidden" });
+    await page.unroute(trackingUrl);
+    await page.evaluate(() => window.dispatchEvent(new Event("online")));
+    await dispatchReference.waitFor();
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     const staff=await ops.newPage();staff.on("pageerror",e=>errors.push(e.message));
     await staff.goto(base);await signIn(staff,"owner@apsp.local",password);
