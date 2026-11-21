@@ -244,7 +244,7 @@ export function CatalogueManager({ u, desk, refresh, notify }) {
             <div className="tablewrap responsive-records listing-table">
               <DataTable
                 label="Product listings"
-                    exportable
+                exportable
                 searchable={false}
                 context={branch + "|" + search}
                 initialSize={20}

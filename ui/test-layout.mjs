@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import {signIn} from "./test-purchase.mjs";
 
 export async function layoutTests(browser,base,password) {
@@ -44,6 +45,24 @@ export async function layoutTests(browser,base,password) {
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
     await page.setViewportSize({width:1280,height:840});
     assert.equal(await page.locator(".listing-table td.numeric").first().evaluate(e=>getComputedStyle(e).textAlign),"end");
+    const exportListings = page.getByRole("button", { name: "Export Product listings as CSV" });
+    async function downloadListings() {
+      const file = page.waitForEvent("download");
+      await exportListings.click();
+      const download = await file;
+      assert.equal(download.suggestedFilename(), "product-listings.csv");
+      return (await readFile(await download.path(), "utf8")).trim().split("\r\n");
+    }
+    const allListings = await downloadListings();
+    assert.equal(allListings[0], '"Product","Price","Available","Visibility"');
+    assert.ok(allListings.length > 21, "Export only included the visible page");
+    const searchListings = page.getByPlaceholder("Name, SKU, category or finish");
+    await searchListings.fill("SF-101");
+    await page.waitForFunction(() => document.querySelectorAll(".listing-table tbody tr").length === 1);
+    const filteredListings = await downloadListings();
+    assert.equal(filteredListings.length, 2);
+    assert.match(filteredListings[1], /SF-101/);
+    await searchListings.fill("");
     const visitor=await browser.newContext({viewport:{width:390,height:844}});
     try {
       const guest=await visitor.newPage();
