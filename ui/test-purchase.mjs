@@ -36,6 +36,13 @@ export async function purchaseBrowser(browser, base, password) {
     await page.setViewportSize({width:390,height:844});
     await page.getByRole("button",{name:"Inspect product photo"}).click();
     assert.ok(await page.locator(".zoom-detail").isVisible());
+    const photo = page.getByRole("button", { name: "Reset photo view" });
+    await photo.focus();
+    await page.keyboard.press("Escape");
+    await page.getByRole("dialog").getByRole("button", { name: "Buy now" }).waitFor();
+    const inspect = page.getByRole("button", { name: "Inspect product photo" });
+    assert.equal(await inspect.evaluate((node) => node === document.activeElement), true);
+    await inspect.click();
     await page.getByRole("button",{name:"Reset photo zoom"}).click();
     await page.getByRole("button",{name:"Buy now",exact:true}).click();
     assert.match(await page.getByLabel("Recipient, phone and delivery address").inputValue(),/Fixture street/);
