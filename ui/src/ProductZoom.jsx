@@ -60,6 +60,11 @@ export function ProductZoom({ photo, name }) {
         y: clamp((event.clientY - r.top) / r.height, 0, 1),
       });
   }
+  function resetView() {
+    setActive(false);
+    setPoint({ x: 0.5, y: 0.5 });
+    setWanted(2.5);
+  }
   function panKeys(e) {
     const vector = {
       ArrowLeft: [-0.09, 0],
@@ -86,7 +91,7 @@ export function ProductZoom({ photo, name }) {
           aria-label={active ? "Reset photo view" : "Inspect product photo"}
           aria-pressed={active}
           onKeyDown={panKeys}
-          onClick={() => setActive(!active)}
+          onClick={() => active ? resetView() : setActive(true)}
           onPointerDown={(e) => {
             if (!active) focusAt(e, image.current);
           }}
@@ -182,11 +187,7 @@ export function ProductZoom({ photo, name }) {
           {active && (
             <button
               aria-label="Reset photo zoom"
-              onClick={() => {
-                setActive(false);
-                setPoint({ x: 0.5, y: 0.5 });
-                setWanted(2.5);
-              }}
+              onClick={resetView}
             >
               <ZoomOut size={15} />
             </button>
