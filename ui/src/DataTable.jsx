@@ -89,7 +89,7 @@ export function DataTable({
     <div className="data-grid" role="region" aria-label={label}>
       <div className="data-tools">
         {searchable && (
-          <label className="grid-search">
+          <div className="grid-search">
             <Search size={15} />
             <input
               type="search"
@@ -101,7 +101,18 @@ export function DataTable({
                 setPage(1);
               }}
             />
-          </label>
+            {query && (
+              <button type="button" className="icon" aria-label={"Clear search in " + label}
+                onClick={(event) => {
+                  const input = event.currentTarget.parentElement.querySelector("input");
+                  setQuery("");
+                  setPage(1);
+                  input?.focus();
+                }}>
+                <X aria-hidden="true" size={15} />
+              </button>
+            )}
+          </div>
         )}
         <label className="mobile-grid-sort">
           Sort{" "}
