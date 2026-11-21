@@ -215,11 +215,13 @@ export function OrderTracker({ user, work, signIn }) {
     read();
     const timer = setInterval(read, 15000);
     document.addEventListener("visibilitychange", read);
+    window.addEventListener("online", read);
     return () => {
       current = false;
       refresh.current = null;
       clearInterval(timer);
       document.removeEventListener("visibilitychange", read);
+      window.removeEventListener("online", read);
     };
   }, [order, user?.id, user?.role, scope]);
   const workshop = data?.workshop?.[0],
