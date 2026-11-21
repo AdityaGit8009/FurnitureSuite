@@ -22,7 +22,7 @@ function canSort(name) {
   return Boolean(name) && name !== "Action" && name !== "Actions";
 }
 function compare(a, b) {
-  const currency = /^[₹$]?\s*-?[\d,]+(?:\.\d+)?$/;
+  const currency = /^(?:-?[₹$]?\s*|[₹$]\s*-)\d[\d,]*(?:\.\d+)?$/;
   if (currency.test(a) && currency.test(b))
     return (
       Number(a.replace(/[^\d.-]/g, "")) - Number(b.replace(/[^\d.-]/g, ""))
