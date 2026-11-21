@@ -180,6 +180,7 @@ export function OrderTracker({ user, work, signIn }) {
     [snapshot, D] = useState(null),
     [error, E] = useState("");
   const refresh = useRef(null);
+  const [copyStatus, setCopyStatus] = useState("");
   const order = selected || String(orders[0]?.id || "");
   const scope = [user?.id, user?.role, order].join("|");
   const data = snapshot?.scope === scope ? snapshot.value : null;
@@ -188,6 +189,7 @@ export function OrderTracker({ user, work, signIn }) {
       loading = false;
     D(null);
     E("");
+    setCopyStatus("");
     if (!user || !order) return;
     if (!/^[1-9]\d*$/.test(order)) {
       E("Enter a valid order number.");
@@ -290,6 +292,22 @@ export function OrderTracker({ user, work, signIn }) {
                 <strong>{label(data.stage)}</strong>
               </div>
               <small>{data.branch} showroom</small>
+              <div className="tracking-link">
+                <a href={"/track-order?order=" + encodeURIComponent(data.id)}>Order tracking link</a>
+                {navigator.clipboard?.writeText && (
+                  <button type="button" onClick={async () => {
+                    const url = new URL("/track-order", location.origin);
+                    url.searchParams.set("order", data.id);
+                    try {
+                      await navigator.clipboard.writeText(url.href);
+                      setCopyStatus("Tracking link copied.");
+                    } catch {
+                      setCopyStatus("Use the order tracking link to copy its address.");
+                    }
+                  }}>Copy tracking link</button>
+                )}
+                <span role="status">{copyStatus}</span>
+              </div>
               <p className="hint">Last checked <time dateTime={snapshot.checkedAt}>{dateTime(snapshot.checkedAt)}</time></p>
               {workshop && (
                 <p className="workshop-progress">

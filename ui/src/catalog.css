@@ -280,3 +280,11 @@
     margin-top: 0;
   }
 }
+
+.tracking-link {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-block: .75rem;
+}
