@@ -221,7 +221,7 @@ export function DataTable({
               "–" +
               Math.min(current * size, result.length)
             : "0"}{" "}
-          of {result.length}
+          of {result.length}{filter && result.length !== rows.length ? " (filtered from " + rows.length + ")" : ""}
         </small>
         <nav aria-label={label + " pages"}>
           <button
