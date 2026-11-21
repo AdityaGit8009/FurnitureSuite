@@ -199,7 +199,7 @@ export function OrderTracker({ user, work, signIn }) {
       try {
         const value = await api("/orders/" + order + "/tracking");
         if (current) {
-          D({ value, scope });
+          D({ value, scope, checkedAt: new Date().toISOString() });
           E("");
         }
       } catch (e) {
@@ -290,6 +290,7 @@ export function OrderTracker({ user, work, signIn }) {
                 <strong>{label(data.stage)}</strong>
               </div>
               <small>{data.branch} showroom</small>
+              <p className="hint">Last checked <time dateTime={snapshot.checkedAt}>{dateTime(snapshot.checkedAt)}</time></p>
               {workshop && (
                 <p className="workshop-progress">
                   Workshop progress · <strong>{label(workshop.stage)}</strong>
