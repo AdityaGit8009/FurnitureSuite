@@ -60,6 +60,8 @@ const dialogStack = [];
 let pageOverflow = "";
 export function Modal({ title, close, children, wide, className = "" }) {
   let ref = useRef(null);
+  const closeCallback = useRef(close);
+  useEffect(() => { closeCallback.current = close; }, [close]);
   useEffect(() => {
     let before = document.activeElement;
     const dialog = ref.current;
@@ -71,7 +73,7 @@ export function Modal({ title, close, children, wide, className = "" }) {
     dialog.focus();
     function key(e) {
       if (document.body.dataset.paymentDialog || dialogStack.at(-1) !== dialog) return;
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") closeCallback.current();
       if (e.key === "Tab") {
         let list = [
           ...ref.current.querySelectorAll(
