@@ -137,6 +137,12 @@ export async function catalogBrowser(browser,base,password,fixture){
     await signIn(page,"catalogbuyer@example.com",password);
     const dispatchReference = page.getByText("Dispatch reference · CAT-DISPATCH-1");
     await dispatchReference.waitFor();
+    const trackingCard = page.locator(".tracking-card");
+    assert.equal(await trackingCard.getByRole("link", { name: "Order tracking link" }).getAttribute("href"),
+      "/track-order?order=" + fixture.order);
+    assert.equal(await trackingCard.locator('[aria-current="step"]').count(), 1);
+    const lastChecked = await trackingCard.locator("time").getAttribute("datetime");
+    assert.ok(Number.isFinite(Date.parse(lastChecked)));
     const trackingUrl = "**/api/orders/" + fixture.order + "/tracking";
     await page.route(trackingUrl, (route) => route.fulfill({
       status: 503, contentType: "application/json", body: JSON.stringify({ message: "Tracking is temporarily offline." }),
