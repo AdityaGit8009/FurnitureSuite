@@ -203,7 +203,7 @@ export function OrderTracker({ user, work, signIn }) {
       } catch (e) {
         if (current) {
           E(e.message);
-          D(null);
+          if (e.status >= 400 && e.status < 500) D(null);
         }
       } finally {
         loading = false;

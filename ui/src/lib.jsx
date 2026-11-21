@@ -23,10 +23,9 @@ export async function api(path, body) {
       !/^\/(login|register|recover|session)(\/|$)/.test(path)
     )
       window.dispatchEvent(new Event("studio-signin-expired"));
-    throw Error(
-      data?.message ||
-        "Request failed (" + res.status + "). Refresh and try again.",
-    );
+    const error = new Error(data?.message || "Request failed (" + res.status + "). Refresh and try again.");
+    error.status = res.status;
+    throw error;
   }
   if (data?.csrf) csrf = data.csrf;
   return data;
