@@ -302,6 +302,7 @@ export function OrderTracker({ user, work, signIn }) {
                 {stages.map((stage, i) => (
                   <li
                     key={stage}
+                    aria-current={stage === data.stage ? "step" : undefined}
                     className={i <= stages.indexOf(data.stage) ? "reached" : ""}
                   >
                     <b>{label(stage)}</b>
